@@ -1,6 +1,7 @@
 """Support for EnOcean cover."""
 from __future__ import annotations
-from email.policy import default
+
+# from email.policy import default
 
 from typing import Any
 
@@ -12,17 +13,20 @@ from homeassistant.components.cover import (
     CoverEntity,
     PLATFORM_SCHEMA,
 )
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_ID, CONF_NAME, Platform
-from homeassistant.const import STATE_CLOSED, STATE_OPEN, STATE_OPENING, STATE_CLOSING
+
+# from homeassistant.config_entries import ConfigEntry
+# from homeassistant.helpers.restore_state import RestoreEntity
+# from homeassistant.const import STATE_CLOSED, STATE_OPEN, STATE_OPENING, STATE_CLOSING
+# from homeassistant.helpers import config_validation as cv, entity_registry as er
+# from homeassistant.helpers.entity import DeviceInfo
+
+from homeassistant.const import CONF_ID, CONF_NAME  # , Platform
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers import config_validation as cv, entity_registry as er
-from homeassistant.helpers.entity import DeviceInfo
+import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
-from homeassistant.helpers.restore_state import RestoreEntity
 from homeassistant.helpers.typing import ConfigType, DiscoveryInfoType
 
-from .const import DOMAIN, LOGGER
+# from .const import DOMAIN, LOGGER
 from .device import EnOceanEntity
 
 COVER_TYPE_TO_DEVICE_CLASS = {
@@ -48,7 +52,7 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
         vol.Required(CONF_ID, default=[]): vol.All(cv.ensure_list, [vol.Coerce(int)]),
         vol.Required(CONF_SENDER_ID): vol.All(cv.ensure_list, [vol.Coerce(int)]),
         vol.Optional(CONF_NAME, default=DEFAULT_NAME): cv.string,
-        vol.Optional(CONF_REVERSED, default=False): cv.bool,
+        vol.Optional(CONF_REVERSED, default=False): cv.boolean,
         vol.Optional(
             CONF_DEVICE_CLASS, default=CONF_DEVICE_CLASS
         ): COVER_TYPE_TO_DEVICE_CLASS.get(cv.string, None),
@@ -146,7 +150,7 @@ class EnOceanCover(EnOceanEntity, CoverEntity):
         optional.extend([0x40])  # unknown
         self.send_command(data=data, optional=optional, packet_type=0x01)
 
-    def open_cover(self, **kwargs) -> None:
+    def open_cover(self, **kwargs: Any) -> None:
         """Open the cover."""
         self._attr_is_opening = True
         self.schedule_update_ha_state()
@@ -156,7 +160,7 @@ class EnOceanCover(EnOceanEntity, CoverEntity):
             self.press_up_button()
         self.release_button()
 
-    def close_cover(self, **kwargs) -> None:
+    def close_cover(self, **kwargs: Any) -> None:
         """Close cover."""
         self._attr_is_closing = True
         self.schedule_update_ha_state()
@@ -166,7 +170,7 @@ class EnOceanCover(EnOceanEntity, CoverEntity):
             self.press_down_button()
         self.release_button()
 
-    def stop_cover(self, **kwargs) -> None:
+    def stop_cover(self, **kwargs: Any) -> None:
         """Stop the cover."""
         self._attr_is_closing = None
         self._attr_is_opening = None
@@ -174,7 +178,7 @@ class EnOceanCover(EnOceanEntity, CoverEntity):
         self.press_down_button()
         self.release_button()
 
-    def open_cover_tilt(self, **kwargs) -> None:
+    def open_cover_tilt(self, **kwargs: Any) -> None:
         """Open the cover tilt."""
         self._attr_is_opening = True
         self.schedule_update_ha_state()
@@ -189,7 +193,7 @@ class EnOceanCover(EnOceanEntity, CoverEntity):
             self.press_up_button()
         self.release_button()
 
-    def close_cover_tilt(self, **kwargs) -> None:
+    def close_cover_tilt(self, **kwargs: Any) -> None:
         """Close the cover tilt."""
         self._attr_is_closing = True
         self.schedule_update_ha_state()
@@ -204,7 +208,7 @@ class EnOceanCover(EnOceanEntity, CoverEntity):
             self.press_down_button()
         self.release_button()
 
-    def stop_cover_tilt(self, **kwargs) -> None:
+    def stop_cover_tilt(self, **kwargs: Any) -> None:
         """Stop the cover."""
         self._attr_is_closing = None
         self._attr_is_opening = None
