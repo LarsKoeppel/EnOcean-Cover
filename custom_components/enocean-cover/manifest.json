@@ -1,10 +1,10 @@
 {
-  "domain": "enocean",
-  "name": "EnOcean",
+  "domain": "enocean-cover",
+  "name": "EnOcean-Cover",
   "codeowners": ["@bdurrer"],
   "config_flow": true,
   "documentation": "https://www.home-assistant.io/integrations/enocean",
   "iot_class": "local_push",
-  "loggers": ["enocean"],
+  "loggers": ["enocean-cover"],
   "requirements": ["enocean==0.50"]
 }
