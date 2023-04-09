@@ -124,7 +124,7 @@ class EnOceanCover(EnOceanEntity, CoverEntity):
         optional = [0x03]
         optional.extend(self.dev_id)
         optional.extend([0x40])  # unknown
-        self.send_command(data, optional, 0x01)
+        self.send_command(data=data, optional=optional, packet_type=0x01)
 
     def press_down_button(self) -> None:
         """Helper Methode to send button down pressed command"""
@@ -134,7 +134,7 @@ class EnOceanCover(EnOceanEntity, CoverEntity):
         optional = [0x03]
         optional.extend(self.dev_id)
         optional.extend([0x40])  # unknown
-        self.send_command(data, optional, 0x01)
+        self.send_command(data=data, optional=optional, packet_type=0x01)
 
     def release_button(self) -> None:
         """Helper Methode to send release button command"""
@@ -144,7 +144,7 @@ class EnOceanCover(EnOceanEntity, CoverEntity):
         optional = [0x03]
         optional.extend(self.dev_id)
         optional.extend([0x40])  # unknown
-        self.send_command(data, optional, 0x01)
+        self.send_command(data=data, optional=optional, packet_type=0x01)
 
     def open_cover(self, **kwargs) -> None:
         """Open the cover."""
@@ -218,7 +218,7 @@ class EnOceanCover(EnOceanEntity, CoverEntity):
         Shutter devices like Becker R30-17-N01 send telegrams with position data.
         We only care about the VLD (0xD2).
         """
-        if packet.data[0] == 0xD2 and packet.data[5:8] == self.dev_id:
+        if packet.data[0] == 0xD2:
             val = packet.data[1]
             if val == 0x7F:
                 # shutter is moving
